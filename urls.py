@@ -1,0 +1,8 @@
+MAIN_PAGE_URL = "https://qa-stellarburgers.education-services.ru/"
+LOGIN_PAGE_URL = f"{MAIN_PAGE_URL}login"
+PERSONAL_ACCOUNT_URL = f"{MAIN_PAGE_URL}account/profile"
+ORDERS_FEED_URL = f"{MAIN_PAGE_URL}feed"
+FORGOT_PASSWORD_URL = f"{MAIN_PAGE_URL}forgot-password"
+USER_LOGIN_ENDPOINT = f"{MAIN_PAGE_URL}api/auth/login"
+USER_REGISTER_ENDPOINT = f"{MAIN_PAGE_URL}api/auth/register"
+USER_DELETE_ENDPOINT  = f"{MAIN_PAGE_URL}api/auth/user"
