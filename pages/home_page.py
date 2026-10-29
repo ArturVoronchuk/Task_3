@@ -20,21 +20,15 @@ class HomePage(BasePage):
 
     def click_on_place_order_btn(self):
         self.wait_home_page_ready()
-        self.click_to_element(home_page_locators.ORDER_BUTTON)
+        self.js_click(home_page_locators.ORDER_BUTTON)
         return self
 
     def click_to_ingredient_open(self):
-        element = self._wait().until(
-            ec.visibility_of_element_located(home_page_locators.INGREDIENT_CARD_BTN)
-        )
-        self.driver.execute_script("arguments[0].click();", element)
+        self.js_click(home_page_locators.INGREDIENT_CARD_BTN)
         return self
 
     def click_on_cross(self):
-        element = self._wait().until(
-            ec.visibility_of_element_located(home_page_locators.CROSS_BTN)
-        )
-        self.driver.execute_script("arguments[0].click();", element)
+        self.js_click(home_page_locators.CROSS_BTN)
         return self
 
     def add_bun_to_basket(self):
@@ -44,28 +38,36 @@ class HomePage(BasePage):
         )
 
     def get_new_order_number(self, timeout=5):
-        self._wait(timeout).until(
-            lambda d: d.find_element(
-                *home_page_locators.ORDER_NUMBER_IN_MODAL
-            ).text.strip() not in ("", "9999")
-        )
-        text = self.driver.find_element(
-            *home_page_locators.ORDER_NUMBER_IN_MODAL
-        ).text.strip()
-        return int(text)
+        return int(self.get_text_when(
+            home_page_locators.ORDER_NUMBER_IN_MODAL,
+            condition=lambda text: text not in ("", "9999"),
+            timeout=timeout
+        ))
 
     def get_order_status_text(self):
         return self.find_visible_element(
             home_page_locators.ORDER_STATUS
         ).text.strip()
 
-    def is_ingredient_modal_opened(self, timeout=10) -> bool:
+    def is_ingredient_modal_opened(self, timeout=10):
         return self.is_element_present(
             home_page_locators.INGREDIENT_MODAL_TITLE, timeout
         )
 
-    def get_ingredient_counter_value(self, timeout=10) -> int:
+    def get_ingredient_counter_value(self, timeout=10):
         counter = self._wait(timeout).until(
             ec.visibility_of_element_located(home_page_locators.INGREDIENT_COUNTER)
         )
         return int(counter.text.strip())
+
+    def is_buns_tab_visible(self, timeout=5):
+        return self.is_element_present(home_page_locators.BUNS_TAB, timeout)
+
+    def is_sauces_tab_visible(self, timeout=5):
+        return self.is_element_present(home_page_locators.SAUCES_TAB, timeout)
+
+    def is_fillings_tab_visible(self, timeout=5):
+        return self.is_element_present(home_page_locators.FILLINGS_TAB, timeout)
+
+    def card_of_ingredient(self):
+        return self.wait_until_invisible(home_page_locators.INGREDIENT_MODAL_TITLE)

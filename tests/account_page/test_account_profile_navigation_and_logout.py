@@ -1,7 +1,6 @@
 import allure
 
 from helpers.auth_helper import AuthHelper
-from locators import login_page_locators
 
 @allure.feature("Проверяем функционал личного кабинета пользователя")
 class TestAccountProfileNavigationAndLogout:

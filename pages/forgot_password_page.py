@@ -23,21 +23,15 @@ class ForgotPasswordPage(BasePage):
         return self
 
     def click_submit_recovery_btn(self):
-        element = self._wait().until(
-            ec.visibility_of_element_located(forgot_password_locators.SUBMIT_RECOVERY_BTN)
-        )
-        self.driver.execute_script("arguments[0].click();", element)
+        self.js_click(forgot_password_locators.SUBMIT_RECOVERY_BTN)
         return self
 
     def get_header_text(self):
-        element = self.driver.find_element(*forgot_password_locators.RECOVERY_PAGE_HEADER)
-        return element.text
+        self.get_text(*forgot_password_locators.RECOVERY_PAGE_HEADER)
+        return self
 
     def click_toggle_password(self, timeout=10):
-        element = self._wait(timeout).until(
-            ec.visibility_of_element_located(forgot_password_locators.TOGGLE_PASSWORD_ICON)
-        )
-        self.driver.execute_script("arguments[0].click();", element)
+        self.js_click(forgot_password_locators.TOGGLE_PASSWORD_ICON)
         return self
 
     def is_email_field_present(self, timeout=5):

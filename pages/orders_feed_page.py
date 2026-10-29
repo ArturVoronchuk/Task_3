@@ -19,10 +19,7 @@ class OrdersFeedPage(BasePage):
 
 
     def click_to_order_in_history(self):
-        element = self._wait().until(
-            ec.visibility_of_element_located(orders_feed_page_locators.FIRST_ORDER_LINK)
-        )
-        self.driver.execute_script("arguments[0].click();", element)
+        self.js_click(orders_feed_page_locators.FIRST_ORDER_LINK)
         return self
 
     def is_modal_appeared_in_dom(self):
@@ -83,17 +80,17 @@ class OrdersFeedPage(BasePage):
         return int(text)
 
     def go_to_constructor_url(self):
-        self.driver.get(urls.MAIN_PAGE_URL)
+        self.go_to_url(urls.MAIN_PAGE_URL)
         return self
 
-    def get_order_numbers_in_progress_section(self) -> list[int]:
+    def get_order_numbers_in_progress_section(self):
         ul = self.find_visible_element(
             orders_feed_page_locators.ORDERS_IN_PROGRESS_LIST
         )
         lis = ul.find_elements(*orders_feed_page_locators.ORDERS_IN_PROGRESS_ITEM)
         return [int(li.text.strip()) for li in lis]
 
-    def wait_order_in_progress_section(self, order_number: int, timeout=15):
+    def wait_order_in_progress_section(self, order_number, timeout=15):
         self._wait(timeout).until(
             lambda d: order_number in self.get_order_numbers_in_progress_section()
         )
@@ -103,3 +100,10 @@ class OrdersFeedPage(BasePage):
         return self.is_element_present(
             orders_feed_page_locators.ORDERS_FEED_HEADER, timeout
         )
+
+    def is_order_in_feed_by_number(self, order_number):
+        try:
+            item = self.find_order_in_feed_by_number(order_number)
+            return item.is_displayed()
+        except TimeoutException:
+            return False

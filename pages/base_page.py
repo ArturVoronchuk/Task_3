@@ -12,6 +12,13 @@ class BasePage:
             timeout = self.timeout
         return WebDriverWait(self.driver, timeout)
 
+    def js_click(self, locator, timeout=10):
+        element = self._wait(timeout).until(
+            ec.visibility_of_element_located(locator)
+        )
+        self.driver.execute_script("arguments[0].click();", element)
+        return self
+
     def go_to_url(self, url):
         self.driver.get(url)
 
@@ -85,3 +92,14 @@ class BasePage:
         self.driver.execute_script(js_script, source, target)
         return self
 
+    def get_text(self, locator, timeout=None):
+        element = self._wait(timeout).until(
+            ec.visibility_of_element_located(locator)
+        )
+        return element.text.strip()
+
+    def get_text_when(self, locator, condition, timeout=10):
+        self._wait(timeout).until(
+            lambda d: condition(self.get_text(locator))
+        )
+        return self.get_text(locator)

@@ -7,10 +7,7 @@ from locators import account_page_locators, common_locators
 class AccountPage(BasePage):
 
     def click_order_history_btn(self):
-        element = self._wait().until(
-            ec.visibility_of_element_located(account_page_locators.ORDER_HISTORY_BTN)
-        )
-        self.driver.execute_script("arguments[0].click();", element)
+        self.js_click(account_page_locators.ORDER_HISTORY_BTN)
         return self
 
     def wait_for_order_history_container(self, timeout=None):
@@ -40,10 +37,7 @@ class AccountPage(BasePage):
         return element.get_attribute("value") or ""
 
     def click_logout_btn(self):
-        element = self._wait().until(
-            ec.visibility_of_element_located(account_page_locators.LOGOUT_BTN)
-        )
-        self.driver.execute_script("arguments[0].click();", element)
+        self.js_click(account_page_locators.LOGOUT_BTN)
         return self
 
     def wait_and_get_first_order_number(self):

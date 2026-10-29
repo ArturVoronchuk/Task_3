@@ -13,8 +13,8 @@ class TestOrdersFeed:
             header_page.click_to_orders_feed_btn()
 
         with allure.step("Проверяем, что URL соответствует ленте заказов"):
-            assert orders_feed_page.driver.current_url == ORDERS_FEED_URL, \
-                f"Ожидался URL: {ORDERS_FEED_URL}, но открыт: {orders_feed_page.driver.current_url}"
+            assert orders_feed_page.get_current_url() == ORDERS_FEED_URL, \
+                f"Ожидался URL: {ORDERS_FEED_URL}, но открыт: {orders_feed_page.get_current_url()}"
 
         with allure.step("Проверяем, что заголовок 'Лента заказов' отображается"):
             assert orders_feed_page.is_orders_feed_header_visible(), (
@@ -80,12 +80,14 @@ class TestOrdersFeed:
 
         with allure.step(f"Переходим в «Лента заказов» и ищем заказ с номером {order_number}"):
             header_page.click_to_orders_feed_btn()
-            found_card = orders_feed_page.find_order_in_feed_by_number(order_number)
 
         with allure.step("Проверяем, что заказ из Истории отображается в Ленте"):
-            assert found_card.is_displayed(), f"Карточка заказа {order_number} не отображается"
+            assert orders_feed_page.is_order_in_feed_by_number, \
+                f"Карточка заказа {order_number} не отображается"
 
-    @allure.title("Счетчик 'Выполнено за всё время увеличивается' увеличивается при создании нового заказа")
+    @allure.title(
+        "Счетчик 'Выполнено за всё время увеличивается' увеличивается при создании нового заказа"
+    )
     def test_new_order_increments_orders_counters(
             self, orders_feed_page, registered_user_credentials, register_user, driver,
             header_page, home_page, login_page

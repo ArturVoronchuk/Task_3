@@ -1,7 +1,6 @@
 import allure
 
 from helpers.auth_helper import AuthHelper
-from locators import home_page_locators
 from urls import MAIN_PAGE_URL
 
 @allure.feature("Проверяем, основной функционал сайта stellar burgers")
@@ -17,22 +16,19 @@ class TestMainFunctionOfHomePage:
             header_page.click_to_constructor_btn()
 
         with allure.step("Проверяем, что URL соответствует главной странице"):
-            assert home_page.driver.current_url == MAIN_PAGE_URL, \
-                f"Ожидался URL: {MAIN_PAGE_URL}, но открыт: {home_page.driver.current_url}"
+            assert home_page.get_current_url() == MAIN_PAGE_URL, \
+                f"Ожидался URL: {MAIN_PAGE_URL}, но открыт: {home_page.get_current_url()}"
 
         with allure.step("Проверяем, что вкладка 'Булки' отображается"):
-            assert home_page.is_element_present(
-                home_page_locators.BUNS_TAB), \
+            assert home_page.is_buns_tab_visible(), \
             "Вкладка 'Булки' не отображается"
 
         with allure.step("Проверяем, что вкладка 'Соусы' отображается"):
-            assert home_page.is_element_present(
-                home_page_locators.SAUCES_TAB), \
+            assert home_page.is_sauces_tab_visible(), \
             "Вкладка 'Соусы' не отображается"
 
         with allure.step("Проверяем, что вкладка 'Начинки' отображается"):
-            assert home_page.is_element_present(
-                home_page_locators.FILLINGS_TAB), \
+            assert home_page.is_fillings_tab_visible(), \
                 "Вкладка 'Начинки' не отображается"
 
     @allure.title("Клик на ингредиент открывает вслпывающее окно с описанием ингредиента")
@@ -55,8 +51,8 @@ class TestMainFunctionOfHomePage:
         with allure.step("Нажимаем кнопку закрытия карточки ингредиента (крестик)"):
             home_page.click_on_cross()
 
-        with allure.step("Проверяем, что карточка ингредиента закрылось"):
-            assert home_page.wait_until_invisible(home_page_locators.INGREDIENT_MODAL_TITLE), \
+        with allure.step("Проверяем, что карточка ингредиента закрылась"):
+            assert home_page.card_of_ingredient(), \
             "Карточка ингредиента все не закрылась"
 
     @allure.title("При добавлении ингредиента в заказ, увеличивается каунтер данного ингредиента")
